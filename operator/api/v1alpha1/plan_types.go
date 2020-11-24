@@ -27,6 +27,9 @@ type PlanSpec struct {
 	// A unique ID for the Plan to be used by OSBAPI. If not provided, a UUID v1 is auto-generated.
 	// +optional
 	ID string `json:"id,omitempty"`
+	// A name for the Plan to be used by OSBAPI instead of the resource object name.
+	// +optional
+	NameOverride string `json:"nameOverride,omitempty"`
 	// A description for the Plan.
 	// +optional
 	Description string `json:"description,omitempty"`

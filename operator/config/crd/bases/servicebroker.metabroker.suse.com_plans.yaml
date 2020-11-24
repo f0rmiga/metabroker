@@ -73,6 +73,10 @@ spec:
               description: A unique ID for the Plan to be used by OSBAPI. If not provided,
                 a UUID v1 is auto-generated.
               type: string
+            nameOverride:
+              description: A name for the Plan to be used by OSBAPI instead of the
+                resource object name.
+              type: string
             offering:
               description: The name of the Offering this Plan belongs to.
               type: string
