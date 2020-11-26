@@ -20,38 +20,32 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
-// EDIT THIS FILE!  THIS IS SCAFFOLDING FOR YOU TO OWN!
-// NOTE: json tags are required.  Any new fields you add must have json tags for the fields to be serialized.
-
-// BindingSpec defines the desired state of Binding
+// BindingSpec defines the Service Binding spec.
 type BindingSpec struct {
-	// INSERT ADDITIONAL SPEC FIELDS - desired state of cluster
-	// Important: Run "make" to regenerate code after modifying this file
-
-	// Foo is an example field of Binding. Edit Binding_types.go to remove/update
-	Foo string `json:"foo,omitempty"`
+	// The name of the Instance to bind.
+	Instance string `json:"plan"`
 }
 
-// BindingStatus defines the observed state of Binding
+// BindingStatus defines the observed state of Binding.
 type BindingStatus struct {
-	// INSERT ADDITIONAL STATUS FIELD - define observed state of cluster
-	// Important: Run "make" to regenerate code after modifying this file
+	// TODO: implement.
 }
 
 // +kubebuilder:object:root=true
 
-// Binding is the Schema for the bindings API
+// Binding is the top-level Schema for the Binding resource API.
 type Binding struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
 
+	// The specification of the desired behaviour of the Binding.
 	Spec   BindingSpec   `json:"spec,omitempty"`
 	Status BindingStatus `json:"status,omitempty"`
 }
 
 // +kubebuilder:object:root=true
 
-// BindingList contains a list of Binding
+// BindingList contains a list of Binding.
 type BindingList struct {
 	metav1.TypeMeta `json:",inline"`
 	metav1.ListMeta `json:"metadata,omitempty"`

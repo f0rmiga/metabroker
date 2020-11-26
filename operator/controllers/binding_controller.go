@@ -18,8 +18,10 @@ package controllers
 
 import (
 	"context"
+	"time"
 
 	"github.com/go-logr/logr"
+	"k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/runtime"
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client"
@@ -37,15 +39,27 @@ type BindingReconciler struct {
 // +kubebuilder:rbac:groups=servicebroker.metabroker.suse.com,resources=bindings,verbs=get;list;watch;create;update;patch;delete
 // +kubebuilder:rbac:groups=servicebroker.metabroker.suse.com,resources=bindings/status,verbs=get;update;patch
 
+const bindingReconcileTimeout = time.Second * 10
+
 func (r *BindingReconciler) Reconcile(req ctrl.Request) (ctrl.Result, error) {
-	_ = context.Background()
+	ctx, cancel := context.WithTimeout(context.Background(), bindingReconcileTimeout)
+	defer cancel()
+
 	_ = r.Log.WithValues("binding", req.NamespacedName)
 
-	// your logic here
+	binding := &servicebrokerv1alpha1.Binding{}
+	if err := r.Get(ctx, req.NamespacedName, binding); err != nil {
+		if errors.IsNotFound(err) {
+			// TODO: the binding no longer exists; run any unbinding steps necessary.
+			return ctrl.Result{}, nil
+		}
+		return ctrl.Result{}, err
+	}
 
 	return ctrl.Result{}, nil
 }
 
+// SetupWithManager configures the controller manager for the Binding resource.
 func (r *BindingReconciler) SetupWithManager(mgr ctrl.Manager) error {
 	return ctrl.NewControllerManagedBy(mgr).
 		For(&servicebrokerv1alpha1.Binding{}).
